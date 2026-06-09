@@ -72,7 +72,7 @@ if not WGET_AT:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = '20260608.01'
+VERSION = '20260609.01'
 TRACKER_ID = 'tenor'
 TRACKER_HOST = 'legacy-api.arpa.li'
 MULTI_ITEM_SIZE = 100
@@ -162,6 +162,10 @@ def normalize_string(s):
         if temp == s:
             break
         s = temp
+    parts = s.split(':', 2)
+    if len(parts) == 3 and parts[0] in ('search', 'suggest'):
+        parts[2] = re.sub(r'\s+', '-', parts[2])
+        s = ':'.join(parts)
     return s
 
 

@@ -359,7 +359,7 @@ set_item = function(url)
         ids[string.lower(string.gsub(unescaped_value, "%s+", "-"))] = true
         if new_item_type == "search" then
           context["term"] = value
-          context["search_path"] = escape_item_value(string.gsub(unescaped_value, "%s+", "-"))
+          context["search_path"] = escape_item_value(unescaped_value)
         elseif new_item_type == "suggest" then
           context["prefix"] = value
         end
@@ -629,7 +629,7 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
       .. api_v2_query(locale)
       .. "&anon_id=" .. context["anon_id"]
     if not user_search then
-      newurl = newurl .. "&q=" .. term .. "&limit=50&contentfilter=low"
+      newurl = newurl .. "&q=" .. string.gsub(term, "%%20", "+") .. "&limit=50&contentfilter=low"
     end
     newurl = newurl
       .. "&media_filter=gif%2Cgif_transparent%2Cmediumgif%2Ctinygif"
@@ -649,7 +649,7 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
       if pos then
         newurl = newurl .. "&pos=" .. pos
       end
-      newurl = newurl .. "&q=" .. term .. "&limit=50"
+      newurl = newurl .. "&q=" .. string.gsub(term, "%%20", "+") .. "&limit=50"
     end
     if searchfilter then
       newurl = newurl .. "&searchfilter=" .. searchfilter
